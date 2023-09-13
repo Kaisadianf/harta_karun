@@ -74,7 +74,22 @@ urlpatterns = [
     path('', show_main, name='show_main'),
 ]
 ~~~
-Di dalam fungsi `path`, Saya membuat parameter pertama sebagai `''` supaya halaman aplikasi tersebut muncul pada halaman utama localpath. Parameter kedua berisikan fungsi yang telah dibuat pada `views.py` dan parameter `name` adalah untuk pengakses fungsi tersebut.
+Di dalam fungsi `path`, saya membuat parameter pertama sebagai `''` supaya halaman aplikasi tersebut muncul pada halaman utama localpath. Parameter kedua berisikan fungsi yang telah dibuat pada `views.py` dan parameter `name` adalah untuk pengakses fungsi tersebut.
+
+g. **Melakukan deployment ke Adaptable**:
+Untuk menerapkan aplikasi yang telah saya kembangkan sehingga teman-teman dapat mengaksesnya melalui Internet, saya melakukan langkah-langkah berikut:
+1. Pertama, saya membuat akun **Adaptable.io** menggunakan akun GitHub yang telah saya gunakan untuk membuat proyek harta_karun.
+2. Setelah berhasil login, saya memilih tombol `New App` dan opsi `Connect an Existing Repository`. 
+3. Hubungkan **Adaptable.io** dengan GitHub dan pilih `All Repositories` selama proses instalasi.
+4. Selanjutnya, saya pilih repositori proyek `harta_karun` sebagai dasar aplikasi yang akan  di-deploy. Saya memastikan juga untuk memilih branch yang akan digunakan sebagai branch deployment.
+5. Untuk template deployment, saya memilih `Python App Template`.
+6. Pilih jenis basis data yang akan digunakan. Dalam kasus ini, saya memilih `PostgreSQL`.
+7. Saya pastikan versi Python sesuai dengan spesifikasi aplikasi harta_karun. Untuk memeriksanya, saya aktifkan virtual environment dan gunakan perintah `python --version`.
+8. Pada bagian `Start Command`, saya masukkan perintah `python manage.py migrate && gunicorn harta_karun.wsgi`.
+9. Selanjutnya, saya memasukkan nama aplikasi, yang juga akan menjadi nama domain situs web aplikasi Anda.
+10. Terakhir, saya mencentang opsi `HTTP Listener on PORT`, lalu klik `Deploy App` untuk memulai proses deployment aplikasi.
+
+Dengan mengikuti langkah-langkah di atas, aplikasi saya akan siap untuk diakses oleh teman-teman Anda melalui Internet.
   
 ### 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html. 
 ![Bagan](gambar_readme/bagan.png)
