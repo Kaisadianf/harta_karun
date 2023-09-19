@@ -150,37 +150,31 @@ c. **XML (eXtensible Markup Language)** digunakan untuk merepresentasikan data d
 Pada umumnya, **JSON** digunakan untuk mengirim data melalui koneksi internet dan untuk proses serialisasi. **JSON** memiliki peran utama dalam mengirim data antara aplikasi web dan server. **JSON** menjadi populer di dunia ***code programming*** dan layanan web karena mampu meningkatkan pertukaran data dan efisiensi hasil layanan web. **JSON** adalah format data berbasis teks yang ringan dan mudah diurai, sehingga tidak memerlukan kode tambahan untuk parsing.
 
 ### 4. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
-#### 1. Membuat input form untuk menambahkan objek model pada app sebelumnya. 
+#### a. Membuat input form untuk menambahkan objek model pada app sebelumnya. 
 Untuk membuat form, agar aplikasi saya bisa digunakan untuk menginput Item berikut adalah step-stepnya:
-a. Membuat file `forms.py` di direktori main
+
+1. . Membuat file `forms.py` di direktori main
 Isi file tersebut adalah import ModelForm dari django.forms dan import Item dari main.models.
 Lalu, saya membuat class ItemForm yang menerima parameter ModelForm, di dalamnya terdapat class Meta dengan `fields` = `name`, `amount`, dan `description"`.
-
-b. Menambahkan import di file `views.py` yang berada di folder main.
+2. Menambahkan import di file `views.py` yang berada di folder main.
 Saya menambahkan:
 ```python
 import HttpResponseRedirect, ProductForm, dan reverse.
 ```
-
-c. Membuat fungsi `create_item` di dalam file `views.py` tersebut.
+3. Membuat fungsi `create_item` di dalam file `views.py` tersebut.
   Fungsi ini bertujuan agar bisa membuat formulir yang dapat menambahkan data produk ke dalam database secara otomatis ketika pengguna mengirimkan data melalui formulir.
-
-d. Mengubah fungsi `show_main` untuk mengambil semua object Item yang ada di database
+4. Mengubah fungsi `show_main` untuk mengambil semua object Item yang ada di database
   Caranya dengan menambahkan `'items': items` di dalam variable `context`.
-
-e. Mengimport fungsi `create_item` ke file `urls.py` di dalam folder main.
+5. Mengimport fungsi `create_item` ke file `urls.py` di dalam folder main.
   Saya menambahkan import `create_item` dari `main.views`.
-
-f. Menambahkan path url yang sesuai
+6. Menambahkan path url yang sesuai
   Saya membuat path baru
   ```python
   path('create-item', create_item, name='create_item'),
   ```
-
-g. Membuat file HTML baru bernama `create_item.html` pada direktori main dalam folder templates.
+7. Membuat file HTML baru bernama `create_item.html` pada direktori main dalam folder templates.
   Saya membuat tabel untuk menunjukkan data yang tersimpan di database.
-
-h. Menambahkan kode di file `main.html` untuk menampilkan data item yang telah di input
+8. Menambahkan kode di file `main.html` untuk menampilkan data item yang telah di input
   Untuk melakukan hal tersebut, saya menambahkan kode:
 ```html
     <style>
@@ -234,7 +228,7 @@ Lalu, saya membuaat button untuk menambahkan item dan diarahkan ke url create_it
     </a>
 ```
 
-#### 2. Menambahkan fungsi `views` untuk melihat objek yang sudah ditambahkan dalam format HTML, XML, JSON, XML by ID, dan JSON by ID.
+#### b. Menambahkan fungsi `views` untuk melihat objek yang sudah ditambahkan dalam format HTML, XML, JSON, XML by ID, dan JSON by ID.
 Saya menambahkan kode berikut dalam file `views.py` yang berada di main.
 ```python
 def show_main(request):
@@ -267,7 +261,7 @@ def show_json_by_id(request, id):
 ```
 Dengan lima fungsi views ini, kita dapat melihat objek yang sudah ditambahkan dalam format HTML, XML, JSON, XML by ID, dan JSON by ID di aplikasi Django `harta_karun`.
 
-#### 3. Membuat routing URL untuk masing-masing views yang telah ditambahkan pada poin 2.
+#### c. Membuat routing URL untuk masing-masing views yang telah ditambahkan pada poin 2.
 Routing URL memungkinkan aplikasi untuk menghubungkan URL tertentu dengan view yang sesuai. Ketika user mengakses URL tertentu, Django akan menggunakan routing URL untuk menentukan view yang harus dipanggil.
 Pada file `urls.py` pada direktori main, saya menambahkan kode berikut:
 ```python
