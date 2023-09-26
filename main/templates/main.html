@@ -10,6 +10,13 @@
     <p>{{class}}</p>
 
     <style>
+        .center-cell {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        }
+
         .special-paragraph {
             margin-top: 45px;
             margin-bottom: 10px;
@@ -20,7 +27,13 @@
             border-collapse: collapse;
         }
     
-        th, td {
+        th {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+        }
+
+        td {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
@@ -37,7 +50,9 @@
         <tr>
             <th>Name</th>
             <th>Amount</th>
+            <th>Update Amount</th>
             <th>Description</th>
+            <th>Delete Item</th>
         </tr>
     
         {% comment %} Berikut cara memperlihatkan data item di bawah baris ini {% endcomment %}
@@ -46,16 +61,38 @@
             <tr>
                 <td>{{item.name}}</td>
                 <td>{{item.amount}}</td>
+                <td class="center-cell">
+                    <form method="POST" action="{% url 'main:update_item_amount' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <button type ="submit" name="amount" value="add">+</button>
+                    </form>
+                </td>
                 <td>{{item.description}}</td>
+                <td class="center-cell">
+                    <form method="POST" action="{% url 'main:delete_item' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <button type ="submit">Delete</button>
+                    </form>
+                </td>
             </tr>
         {% endfor %}
     </table>
     
     <br />
     
+    <h5>Sesi terakhir login: {{ last_login }}</h5>
+    
     <a href="{% url 'main:create_item' %}">
         <button>
             Add New Item
+        </button>
+    </a>
+
+    <a href="{% url 'main:logout' %}">
+        <button>
+            Logout
         </button>
     </a>
      

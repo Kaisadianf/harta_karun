@@ -291,3 +291,211 @@ urlpatterns = [
 
 ### ***Screenschot*** Postman (JSON ***by*** ID)
 ![Postman JSON by ID](gambar_readme/jsonbyid.png)
+
+### ----------------------------------------------------------------------------------------------------------------
+
+# TUGAS 4
+
+### 1. Apa itu Django UserCreationForm, dan jelaskan apa kelebihan dan kekurangannya?
+
+**Django UserCreationForm** adalah kelas `form` bawaan yang disediakan oleh sistem autentikasi pengguna Django. Kelas ini dirancang untuk memudahkan pembuatan akun pengguna baru dalam aplikasi Django. **UserCreationForm** adalah turunan dari kelas `ModelForm`, yang memungkinkan pengembang membuat formulir registrasi pengguna dengan lebih mudah. Form ini menyederhanakan proses pengumpulan dan validasi data pendaftaran pengguna, seperti nama pengguna dan kata sandi, sehingga mempermudah implementasi fungsi registrasi pengguna dalam proyek Django.
+
+Kelebihan dari penggunaan **UserCreationForm** adalah:
+
+1. **Keamanan dan Keandalan**: Django memiliki sistem manajemen kata sandi yang kuat dengan model User bawaan. Defaultnya, sistem kata sandi sudah memberikan tingkat keamanan yang tinggi tanpa memerlukan usaha tambahan dari pengembang.
+
+2. **Validasi Data**: Form ini menyediakan validasi bawaan untuk data pendaftaran pengguna, sehingga memastikan bahwa data yang dimasukkan oleh pengguna sesuai dengan aturan yang ditetapkan.
+
+3. **Unik Username**: UserCreationForm memastikan bahwa nama pengguna yang dibuat oleh pengguna baru adalah unik. Keunikan ini diperiksa pada tingkat database dan juga diverifikasi oleh form yang disediakan oleh Django.
+
+Namun, ada beberapa kekurangan dalam penggunaan **UserCreationForm**:
+
+1. **Keterbatasan Dalam Modifikasi Data Fields**: Memodifikasi data fields seperti menghapus atau menambahkan data pada UserCreationForm tidaklah mudah. Framework ini tidak secara fleksibel mendukung perubahan ini.
+
+2. **Keterbatasan dalam Penggunaan Model User Default**: Model User default yang disediakan oleh Django dibuat di database aplikasi secara otomatis saat pembuatan proyek Django baru. Ini dapat mengakibatkan keterkaitan yang kompleks dengan model pengguna default, sehingga mengubahnya dapat memiliki efek yang tidak diinginkan pada aplikasi, terutama jika Anda menggunakan pustaka pihak ketiga.
+
+### 2. Apa perbedaan antara autentikasi dan otorisasi dalam konteks Django, dan mengapa keduanya penting?
+
+Perbedaan antara autentikasi dan otorisasi dalam konteks Django adalah sebagai berikut:
+
+- **Autentikasi**: Ini melibatkan verifikasi identitas pengguna melalui proses seperti nama pengguna dan kata sandi. Django memiliki sistem autentikasi yang kuat untuk memastikan bahwa hanya pengguna yang sah yang dapat mengakses aplikasi.
+  
+- **Otorisasi**: Setelah pengguna berhasil diautentikasi, otorisasi menentukan hak akses pengguna, seperti apa yang dapat dilihat atau diubah. Django menggunakan sistem berbasis peran dan izin untuk mengendalikan otorisasi, memastikan bahwa pengguna hanya memiliki akses sesuai dengan peran atau izin mereka. 
+
+Keduanya penting untuk menjaga keamanan dan integritas aplikasi web. Autentikasi melindungi dari akses tidak sah, sementara otorisasi membatasi hak akses sesuai dengan peran atau izin pengguna.
+
+### 3. Apa itu cookies dalam konteks aplikasi web, dan bagaimana Django menggunakan cookies untuk mengelola data sesi pengguna?
+
+**Cookies** adalah data kecil yang disimpan pada perangkat pengguna oleh ***server web***. Django menggunakan **cookies** untuk menyimpan dan mengelola data sesi pengguna, seperti preferensi dan identifikasi pengguna. Data sesi disimpan dalam **cookies** yang dikirim ke ***browser*** pengguna, dengan pengamanan bawaan untuk melindungi integritasnya. Django memungkinkan pengembang untuk mengonfigurasi pengaturan **cookies**, dan data sesi dapat diakses oleh aplikasi web untuk personalisasi dan otorisasi.
+
+### 4. Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai?
+
+Penggunaan **cookies** dalam pengembangan web memiliki keuntungan, seperti pengelolaan sesi pengguna dan personalisasi, namun juga membawa risiko keamanan. Risiko ini meliputi keamanan data, potensi pencurian cookies, dan masalah privasi. Dengan begitu, untuk mengurangi risiko, perlu mengimplementasikan enkripsi, kebijakan privasi yang jelas, dan pencegahan kerentanan keamanan seperti XSS. Keseluruhan, **cookies** akan aman jika diatur dengan baik dan memperhatikan kebijakan privasi serta keamanan data pengguna.
+
+### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+#### a. Menimplementasikan fungsi regitrasi, login, logout, update item amount, dan delete item
+Fungsi `register` memungkinkan ***user*** baru untuk membuat akun di aplikasi. Fungsi `login` memungkinkan ***user*** yang telah terdaftar untuk masuk ke dalam akun mereka. Fungsi `logout` memungkinkan ***user*** untuk keluar dari akun mereka dan mengakhiri sesi mereka. Fungsi `update_item_amount` memungkinkan ***user*** untuk menambahkan atau meng-***update*** jumlah item yang telah terdaftar. Fungsi `delete_item` memungkinkan ***user*** untuk menghapus item yang telah terdaftar.
+
+Pertama, pada file `views.py`` dalam direktori main saya mengimport **redirect**, **UserCreationForm**, **messages**, **authenticate**, **login**, **logout**, dan **Http404**. 
+
+Lalu, saya menambahkan beberapa fungsi di dalam file `views.py` dalam direktori main, yaitu:
+
+```python
+def register(request):
+    form = UserCreationForm()
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account has been successfully created!')
+            return redirect('main:login')
+    context = {'form':form}
+    return render(request, 'register.html', context)
+
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            response = HttpResponseRedirect(reverse("main:show_main")) 
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
+        else:
+            messages.info(request, 'Sorry, incorrect username or password. Please try again.')
+    context = {}
+    return render(request, 'login.html', context)
+
+def logout_user(request):
+    logout(request)
+    response = HttpResponseRedirect(reverse('main:login'))
+    response.delete_cookie('last_login')
+    return response
+
+@login_required(login_url='/login')
+def update_item_amount(request):
+    if request.method == "POST":
+        item_id = request.POST.get('item_id')
+        amount = request.POST.get('amount')
+
+        try:
+            item = Item.object.get(pk=item_id)
+            if amount == 'add':
+                item.amount += 1
+            elif amount == 'reduce':
+                if item.amount > 0:
+                    item.amount -= 1
+            item.save()
+        except Item.DoesNotExist:
+            raise Http404
+
+@login_required(login_url='/login')
+def delete_item(request):
+    if request.method == "POST":
+        item_id = request.POST.get('item_id')
+
+        try:
+            item = Item.objects.get(pk=item_id, user=request.user)
+            item.delete()
+        except Item.DoesNotExist:
+            pass
+
+    return redirect('main:show_main')
+```
+
+Setelah itu, di direktori `main` > `templates` saya membuat file html baru bernama `register.html` yang berisi form registrasi yang akan mengambil input dari user, mengirimkannya melalui metode POST, dan juga menampilkan pesan-pesan kepada user. Saya juga menghias page tersebut dengan menambahkan style di file html tersebut.
+
+Saya juga membuat file `login.html` dalam direktori `main` > `templates`. File ini berfungsi sebagai halaman ***login*** dalam sebuah aplikasi web. Halaman ini memuat form ***login*** yang mengambil input ***username*** dan ***password*** dari ***user***. Ketika formulir ini di-***submit***, data akan dikirimkan dengan metode **POST**. Halaman juga menampilkan pesan-pesan kepada ***user*** jika terdapat pesan-pesan yang perlu ditampilkan, seperti pesan kesalahan saat ***login*** gagal. Terakhir, halaman ini menyertakan tautan untuk menuju halaman registrasi jika user belum memiliki akun, dengan menggunakan tautan yang mengarah ke URL untuk halaman ***register***.
+
+Untuk ***logout***, saya hanya menambahkan ***button logout*** pada `main.html`. Saya juga membuat halaman main terbatas penggunaannya dengan menambahkan `login_required` pada file `views.py` di direktori main.
+
+Untuk ***update_item_amount*** dan ***delete_item***, saya hanya menambahkan ***button logout*** 
+```python
+<td>{{item.amount}}</td>
+<td class="center-cell">
+    <form method="POST" action="{% url 'main:update_item_amount' %}">
+        {% csrf_token %}
+        <input type="hidden" name="item_id" value="{{ item.id }}">
+        <button type ="submit" name="amount" value="add">+</button>
+    </form>
+</td>
+<td>{{item.description}}</td>
+<td class="center-cell">
+    <form method="POST" action="{% url 'main:delete_item' %}">
+        {% csrf_token %}
+        <input type="hidden" name="item_id" value="{{ item.id }}">
+        <button type ="submit">Delete</button>
+    </form>
+</td>
+```
+
+Di file `urls.py` saya menambahkan import **register**, **login_user** **logout_user**, **update_item_amount**, dan **delete_item**. Saya juga menambahkan path-path yang sesuai pada **urlpatterns**, sebagai berikut:
+
+```python
+path('register/', register, name='register'),
+path('login/', login_user, name='login'),
+path('logout/', logout_user, name='logout'),
+path('update_item_amount/', update_item_amount, name='update_item_amount'),
+path('delete_item/', delete_item, name='delete_item'),
+```
+
+#### b. Membuat dua akun pengguna dengan masing-masing tiga ***dummy data*** menggunakan model yang telah dibuat pada aplikasi sebelumnya untuk setiap akun di lokal.
+Untuk bagian ini, saya melakukan registrasi 2 kali dengan nama akun yang berbeda, yaitu bambang dan Susanti. Lalu, saya login dan menambahkan 3 item di aplikasi harta karun saya. Saya lalukan hal yang sama untuk akun kedua saya dengan data yang berbeda.
+
+#### c. Menghubungkan model `Item` dengan `User`.
+Pertama, pada file `models.py` di direktori `main`, saya meng-***import*** `User`. Dengan meng-***import*** `User`, aplikasi saya bisa digunakan untuk membuat, mengelola, dan mengautentikasi akun ***user***. Saya juga menggunakannya sebagai referensi saat menampilkan data milik ***user***. Lalu, saya menambahkan kode:
+```python
+user = models.ForeignKey(User, on_delete=models.CASCADE)
+```
+untuk menghubungkan objek dalam model saat ini dengan objek dalam model `User` dari Django. Opsi `on_delete=models.CASCADE` menentukan bahwa ketika objek `User` terkait dihapus, objek dalam model saat ini yang menggunakan ***foreign key*** tersebut juga akan dihapus secara otomatis untuk menjaga konsistensi dalam database.
+
+Setelah itu, dalam fungsi `create_item` dalam file `views.py` dalam main, saya memodifikasi fungsinya dengan menyisipkan:
+```python
+if form.is_valid() and request.method == "POST":
+     product = form.save(commit=False)
+     product.user = request.user
+     product.save()
+     return HttpResponseRedirect(reverse('main:show_main'))
+```
+untuk memproses data dari form, menghubungkannya dengan ***user*** yang ***login*** saat ini, menyimpannya ke dalam database, dan mengarahkan ***user*** ke halaman main setelah berhasil tersimpan. Dalam fungsi `show_main` saya mengubah ***value context*** nama menjadi `request.user.username` untuk menyesuaikan ***user*** yang ***login***. Tidak lupa, saya menambahkan `items = Item.objects.filter(user=request.user)` untuk hanya menampilkan data dari ***user*** spesifik yang sedang ***login***.
+
+Terakhir, saya melakukan migrasi untuk menyimpan perubahan data.
+
+#### d. Menampilkan detail informasi pengguna yang sedang logged in seperti ***username dan*** menerapkan `cookies` seperti `last login` pada halaman utama aplikasi.
+Pada file `models.py`, saya membuat relasi antara item dengan ***foreign key***. Caranya dengan menambahkan kode
+```python
+user = models.ForeignKey(User, on_delete=models.CASCADE)
+```
+***ForeignKey*** digunakan untuk menyambungkan suatu objek dengan objek lain, dalam konteks ini menghubungkan setiap item dengan ***user*** yang membuatnya.
+
+Untuk menampilkan siapa yang sedang ***login*** dalam aplikasi, saya memodifikasi fungsi `show_main` dengan cara mengubah ***value context*** nama menjadi `request.user.username` untuk menyesuaikan ***user*** yang ***login***.
+
+Untuk menampilkan data ***last login*** pada aplikasi, pertama-tama saya mengimport `datetime` di file `views.py` dalam `main`. 
+Lalu, saya memodifikasi kode saya bagian `login_user` menjadi:
+```python
+if user is not None:
+    login(request, user)
+    response = HttpResponseRedirect(reverse("main:show_main")) 
+    response.set_cookie('last_login', str(datetime.datetime.now()))
+    return response
+```
+Bagian ini untuk memproses ***login user*** dalam aplikasi web yang melibatkan otentikasi, pengaturan sesi, mengirim `cookie`, dan mengarahkan ***user*** ke halaman yang sesuai.
+Lalu, tidak lupa saya menambahkan `context` pada fungsi `show_main` dengan menambahkan:
+```python
+'last_login': request.COOKIES['last_login'],
+```
+Lalu, di bagian fungsi `logout_user` saya menambahkan baris kode:
+```python
+response = HttpResponseRedirect(reverse('main:login'))
+response.delete_cookie('last_login')
+```
+untuk menghapus data cookie pengguna yang baru saja logout.
+
+Pada file `main.html` saya menggunakan context `last_login` dengan cara:
+```html
+<h5>Last entered MyWardrobe: {{ last_login }}</h5>
+```
+untuk memberikan informasi user yang sedang login.
