@@ -5,29 +5,95 @@
 {% endblock meta %}
 
 {% block content %}  
-<div class = "login">
-    
-    <h1>Register</h1>  
+<style>
+    body {
+        background: radial-gradient(circle, #331D2C, #FD8D14, #FFDBAA);
+        margin-left: 70px;
+        margin-right: 70px;
+    }
 
-        <form method="POST" >  
-            {% csrf_token %}  
-            <table>  
-                {{ form.as_table }}  
-                <tr>  
-                    <td></td>
-                    <td><input type="submit" name="submit" value="Daftar"/></td>  
-                </tr>  
-            </table>  
-        </form>
+    .login {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        border-radius: 20px;
+        padding: 20px;
+        margin-top: 80px;
+        margin-bottom: -30px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
 
-    {% if messages %}  
-        <ul>   
-            {% for message in messages %}  
-                <li>{{ message }}</li>  
-                {% endfor %}  
-        </ul>   
+    .login h1 {
+        font-family: 'Treasure Map', serif;
+        font-size: 36px;
+        color: #331D2C;
+    }
+
+    .login table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .login th,
+    .login td {
+        padding: 10px;
+    }
+
+    .login input[type="text"] {
+        width: 96%;
+        padding: 4px;
+        border: 1px solid rgb(103, 103, 103);
+        border-radius: 2px;
+    }
+
+    .login input[type="submit"] {
+        background-color: #FD8D14;
+        color: black;
+        border: none;
+        border-radius: 15px;
+        padding: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        width: 100px;
+        float: right;
+        margin-top: 50px;
+    }
+
+    .login ul {
+        font-size: 13px;
+        list-style: none;
+        padding: 0;
+    }
+
+    .login ul li {
+        color: red;
+    }
+</style>
+
+<div class="login">
+    <h1>Register</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td><input type="submit" name="submit" value="Daftar"/></td>
+            </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
     {% endif %}
-
 </div>  
 
 {% endblock content %}

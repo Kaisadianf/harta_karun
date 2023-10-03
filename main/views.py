@@ -86,14 +86,28 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
-@login_required(login_url='/login')
+def edit_item(request, id):
+    # Get product berdasarkan ID
+    product = Item.objects.get(pk = id)
+
+    # Set product sebagai instance dari form
+    form = ItemForm(request.POST or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_item.html", context)
+
 def update_item_amount(request):
     if request.method == "POST":
         item_id = request.POST.get('item_id')
         amount = request.POST.get('amount')
 
         try:
-            item = Item.object.get(pk=item_id)
+            item = Item.objects.get(pk=item_id, user=request.user)
             if amount == 'add':
                 item.amount += 1
             elif amount == 'reduce':
@@ -102,8 +116,9 @@ def update_item_amount(request):
             item.save()
         except Item.DoesNotExist:
             raise Http404
+    
+    return redirect('main:show_main')
 
-@login_required(login_url='/login')
 def delete_item(request):
     if request.method == "POST":
         item_id = request.POST.get('item_id')

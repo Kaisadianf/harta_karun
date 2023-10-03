@@ -1,99 +1,207 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Harta Karun Page</h1>
+<style>
+    .navbar {
+        display: flex;
+        justify-content: center;
+    }
 
-    <h5>Name:</h5>
-    <p>{{name}}</p>
+    .nav-links {
+        text-align: center;
+    }
 
-    <h5>Class:</h5>
-    <p>{{class}}</p>
+    body {
+        background: radial-gradient(circle, #FD8D14, #FFDBAA, white);
+        margin: 0 70px;
+    }
 
-    <style>
-        .center-cell {
+    .container {
+        text-align: center;
+    }
+
+    .header {
+        border-radius: 20px;
+        padding: 20px;
+        margin: 30px 0 -30px;
+    }
+
+    .header h1 {
+        font-family: 'Treasure Map', serif;
+        font-size: 36px;
+    }
+
+    .quote {
+        font-style: italic;
+        margin-bottom: 50px;
+    }
+
+    .info-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .info-container {
+        display: flex;
+        justify-content: space-between;
+        margin: -25px 0 30px;
+        padding: 5px;
+        width: 30%;
+    }
+
+    .info-container h5 {
+        margin-bottom: 2px;
+        font-family: 'Treasure Map', sans-serif;
+    }
+
+    .info-box h5 {
+        margin-top: -10px;
+    }
+
+    .item-table {
+        border-radius: 15px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .item-table th,
+    .item-table td {
+        border-radius: 15px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .item-table th {
+        background-color: #331D2C;
+        color: white;
+    }
+
+    .item-table tr:nth-child(odd) {
+        background-color: #dddddd;
+    }
+
+    .item-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .item-table tr:last-child {
+        background-color: #FFA07A;
+    }
+
+    .center-cell {
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100%;
-        }
+    }
 
-        .special-paragraph {
-            margin-top: 45px;
-            margin-bottom: 10px;
-        }
+    .item-actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-    
-        th {
-            border: 1px solid #dddddd;
-            text-align: center;
-            padding: 8px;
-        }
+    .item-actions button {
+        padding: 5px 10px;
+        cursor: pointer;
+        margin: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        border-radius: 15px;
+    }
 
-        td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-    
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-    </style>
+    .create-item {
+        margin: 20px 0 50px;
+        background-color: #FD8D14;
+        color: black;
+        border: 2px solid #331D2C;
+        border-radius: 15px;
+        padding: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
 
-    <p class="special-paragraph">Kamu menyimpan <strong>{{total}}</strong> item pada aplikasi ini</p>
+    .last-login {
+        font-family: 'Treasure Map', serif;
+        font-size: 16px;
+    }
+</style>
 
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Update Amount</th>
-            <th>Description</th>
-            <th>Delete Item</th>
-        </tr>
-    
-        {% comment %} Berikut cara memperlihatkan data item di bawah baris ini {% endcomment %}
-    
-        {% for item in items %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="d-flex justify-content-between w-100">
+        <div class="nav-links">
+            <span class="nav-link">Logged in as: <strong>{{ name }}</strong> - <strong>{{ class }}</strong></span> 
+        </div>
+        <div class="nav-links ml-auto">
+            <span class="nav-link"><a href="{% url 'main:logout' %}">Logout</a></span>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="header">
+        <h1>Harta Karun</h1>
+    </div>
+
+    <div class="quote-container">
+        <p class="quote">"Kekayaan adalah harta yang paling berharga"</p>
+    </div>
+
+    <p class="special-paragraph">Kamu menyimpan <strong>{{ total }}</strong> item pada aplikasi ini</p>
+
+    <table class="item-table">
+        <thead>
             <tr>
-                <td>{{item.name}}</td>
-                <td>{{item.amount}}</td>
-                <td class="center-cell">
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Edit/Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td class="center-cell item-actions">
                     <form method="POST" action="{% url 'main:update_item_amount' %}">
                         {% csrf_token %}
                         <input type="hidden" name="item_id" value="{{ item.id }}">
-                        <button type ="submit" name="amount" value="add">+</button>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-secondary" type="submit" name="amount" value="reduce">-</button>
+                            </div>
+                            <input type="text" class="form-control text-center" value="{{ item.amount }}" readonly>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit" name="amount" value="add">+</button>
+                            </div>
+                        </div>
                     </form>
                 </td>
-                <td>{{item.description}}</td>
-                <td class="center-cell">
-                    <form method="POST" action="{% url 'main:delete_item' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="item_id" value="{{ item.id }}">
-                        <button type ="submit">Delete</button>
-                    </form>
+                <td>{{ item.description }}</td>
+                <td class="center-cell item-actions">
+                    <div class="btn-group">
+                        <a href="{% url 'main:edit_item' item.pk %}" class="btn btn-primary">
+                            ✎ Edit
+                        </a>                        
+                        <form method="POST" action="{% url 'main:delete_item' %}" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <button type="submit" class="btn btn-danger">
+                                🗑️ Delete
+                            </button>
+                        </form>
+                    </div>
                 </td>
             </tr>
-        {% endfor %}
+            {% endfor %}
+        </tbody>
     </table>
-    
+
     <br />
-    
-    <h5>Sesi terakhir login: {{ last_login }}</h5>
-    
+
     <a href="{% url 'main:create_item' %}">
-        <button>
-            Add New Item
-        </button>
+        <button class="btn btn-primary create-item">Add New Item</button>
     </a>
 
-    <a href="{% url 'main:logout' %}">
-        <button>
-            Logout
-        </button>
-    </a>
-     
+    <h5 class="last-login">Sesi terakhir login: {{ last_login }}</h5>
+</div>
 {% endblock content %}

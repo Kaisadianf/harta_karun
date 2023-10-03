@@ -1,33 +1,76 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-    <title>Login</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: radial-gradient(circle, #331D2C, #FD8D14, #FFDBAA);
+        }
+
+        .login-container {
+            width: 400px;
+            background: #f1f1f1;
+            border-radius: 20px; /* Untuk membuat bubble oval */
+            padding: 40px;
+            text-align: center;
+        }
+
+        .login-container h1 {
+            font-size: 24px;
+            font-family: 'Poppins', sans-serif; /* Ganti font menjadi Poppins */
+            margin-top: -10px; /* Menggeser judul ke atas */
+        }
+
+        .form-control {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px; /* Tambahkan margin atas untuk spacing antar elemen */
+        }
+
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .register-link {
+            margin-top: 20px; /* Tambahkan margin atas agar tulisan "Register Now" lebih ke bawah */
+            margin-bottom: -10px;
+        }
+    </style>
 {% endblock meta %}
+
 
 {% block content %}
 
-<div class = "login">
+<div class="login-container">
 
     <h1>Login</h1>
 
     <form method="POST" action="">
         {% csrf_token %}
-        <table>
-            <tr>
-                <td>Username: </td>
-                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
-            </tr>
-                    
-            <tr>
-                <td>Password: </td>
-                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
-            </tr>
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" placeholder="Username" class="form-control">
+                
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" placeholder="Password" class="form-control">
 
-            <tr>
-                <td></td>
-                <td><input class="btn login_btn" type="submit" value="Login"></td>
-            </tr>
-        </table>
+        <input class="login-btn" type="submit" value="Login">
     </form>
 
     {% if messages %}
@@ -38,7 +81,9 @@
         </ul>
     {% endif %}     
         
-    Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+    <div class="register-link">
+        Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+    </div>
 
 </div>
 

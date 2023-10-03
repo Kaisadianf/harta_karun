@@ -1,5 +1,7 @@
 {% extends 'base.html' %} 
 
+{% load static %}
+
 {% block content %}
     <style>
         body {
@@ -72,8 +74,8 @@
             border-radius: 15px;
             padding: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            float: right;
-            margin-top: 10px;
+            float: right; /* Menggeser tombol ke kanan */
+            margin-top: 10px; /* Jarak antara tombol dan tabel */
         }
 
     </style>
@@ -81,7 +83,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>Add New Item</h1>
+            <h1>Edit Item</h1>
         </div>
 
         <div class="create-item-form">
@@ -91,10 +93,11 @@
                     {{ form.as_table }}
                     <tr>
                         <td></td>
+                        <td>
+                            <input type="submit" value="Edit Product"/>
+                        </td>
                     </tr>
                 </table>
-
-                <input type="submit" value="Add Item"/>
             </form>
         </div>
 
