@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block content %} 
 <style>
     .navbar {
         display: flex;
@@ -59,55 +59,65 @@
         margin-top: -10px;
     }
 
-    .item-table {
-        border-radius: 15px;
-        width: 100%;
-        margin: 0 auto;
+    @media (max-width: 768px) {
+        .card {
+            width: 100%;
+            margin: 15px 0;
+        }
     }
 
-    .item-table th,
-    .item-table td {
-        border-radius: 15px;
-        padding: 10px;
+    .card {
+        display: inline-block;
+        width: 30%;
+        margin: 10px 1%;
+        margin-left: 50px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         text-align: center;
+        background-color: white;
     }
 
-    .item-table th {
-        background-color: #331D2C;
-        color: white;
+    .card + .card {
+        margin-top: 15px;
     }
 
-    .item-table tr:nth-child(odd) {
-        background-color: #dddddd;
+    .card-body {
+        padding: 20px;
     }
 
-    .item-table tr:nth-child(even) {
-        background-color: #f2f2f2;
+    .card-title {
+        font-size: 18px;
+        font-weight: bold;
     }
 
-    .item-table tr:last-child {
-        background-color: #FFA07A;
+    .card-text {
+        font-size: 14px;
     }
 
-    .center-cell {
+    .card-buttons {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
+        justify-content: space-between;
+        margin-top: 10px;
     }
 
-    .item-actions {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .item-actions button {
+    .btn {
         padding: 5px 10px;
         cursor: pointer;
-        margin: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        border-radius: 15px;
+    }
+
+    .btn-edit {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+
+    .btn-delete {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 5px;
     }
 
     .create-item {
@@ -124,12 +134,22 @@
         font-family: 'Treasure Map', serif;
         font-size: 16px;
     }
+
+    .custom-button-class {
+        margin: 20px 0 50px;
+        background-color: #FD8D14;
+        color: black;
+        border: 2px solid #331D2C;
+        border-radius: 15px;
+        padding: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="d-flex justify-content-between w-100">
         <div class="nav-links">
-            <span class="nav-link">Logged in as: <strong>{{ name }}</strong> - <strong>{{ class }}</strong></span> 
+            <span class="nav-link">Logged in as: <strong>{{ name }}</strong> - <strong>{{ class }}</strong></span>
         </div>
         <div class="nav-links ml-auto">
             <span class="nav-link"><a href="{% url 'main:logout' %}">Logout</a></span>
@@ -148,60 +168,102 @@
 
     <p class="special-paragraph">Kamu menyimpan <strong>{{ total }}</strong> item pada aplikasi ini</p>
 
-    <table class="item-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Description</th>
-                <th>Edit/Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in items %}
-            <tr>
-                <td>{{ item.name }}</td>
-                <td class="center-cell item-actions">
-                    <form method="POST" action="{% url 'main:update_item_amount' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="item_id" value="{{ item.id }}">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-outline-secondary" type="submit" name="amount" value="reduce">-</button>
-                            </div>
-                            <input type="text" class="form-control text-center" value="{{ item.amount }}" readonly>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="submit" name="amount" value="add">+</button>
-                            </div>
-                        </div>
-                    </form>
-                </td>
-                <td>{{ item.description }}</td>
-                <td class="center-cell item-actions">
-                    <div class="btn-group">
-                        <a href="{% url 'main:edit_item' item.pk %}" class="btn btn-primary">
-                            ✎ Edit
-                        </a>                        
-                        <form method="POST" action="{% url 'main:delete_item' %}" class="d-inline">
-                            {% csrf_token %}
-                            <input type="hidden" name="item_id" value="{{ item.id }}">
-                            <button type="submit" class="btn btn-danger">
-                                🗑️ Delete
-                            </button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <table id="item_cards"></table>
 
     <br />
 
+    
     <a href="{% url 'main:create_item' %}">
         <button class="btn btn-primary create-item">Add New Item</button>
     </a>
-
+    
+    <button type="button" class="btn btn-primary custom-button-class" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Item by AJAX</button>
+    
     <h5 class="last-login">Sesi terakhir login: {{ last_login }}</h5>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Item</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="col-form-label">Amount:</label>
+                        <input type="number" class="form-control" id="amount" name="amount"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Item</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function getItems() {
+        return fetch("{% url 'main:get_item_json' %}").then((res) => res.json());
+    }
+
+    async function refreshItems() {
+        document.getElementById("item_cards").innerHTML = ""; 
+        const products = await getItems();
+
+        products.forEach((item) => {
+            const editUrl = "{% url 'main:edit_item' 999999 %}".replace('999999', item.pk);
+            const deleteUrl = "{% url 'main:delete_item' 999999 %}".replace('999999', item.pk);
+            const increaseUrl = `{% url 'main:increase_amount' 999999 %}`.replace('999999', item.pk);
+            const decreaseUrl = `{% url 'main:decrease_amount' 999999 %}`.replace('999999', item.pk);
+
+            const newCard = `
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">${item.fields.name}</h5>
+                    <a href="${increaseUrl}" class="btn btn-sm btn-increase">[+]</a>
+                    <p class="card-text amount-display">${item.fields.amount} ${item.fields.description}</p>
+                    <a href="${decreaseUrl}" class="btn btn-sm btn-increase">[-]</a>
+                    <br>
+                    <br>
+                    <a href="${editUrl}" class="btn btn-sm btn-edit">✎</a>
+                    <a href="${deleteUrl}" class="btn btn-sm btn-delete">🗑️</a>
+                </div>
+            </div>`;
+
+            document.getElementById("item_cards").insertAdjacentHTML('beforeend', newCard);
+        });
+    }
+
+    refreshItems();
+
+    function addItem() {
+        fetch("{% url 'main:add_item_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        })
+        .then(refreshItems)
+        .catch(error => {
+            console.error(error);
+        });
+
+        document.getElementById("form").reset();
+        return false;
+    }
+
+    document.getElementById("button_add").onclick = addItem;
+</script>
+
 {% endblock content %}

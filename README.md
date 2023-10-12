@@ -4,6 +4,8 @@
 
 **Kelas  : PBP C**
 
+**Link Aplikasi : http://kaisa-dian-tugas.pbp.cs.ui.ac.id**
+
 # TUGAS 2
 
 ### 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
@@ -83,10 +85,10 @@ Untuk menerapkan aplikasi yang telah saya kembangkan sehingga teman-teman dapat 
 6. Pilih jenis basis data yang akan digunakan. Dalam kasus ini, saya memilih `PostgreSQL`.
 7. Saya pastikan versi Python sesuai dengan spesifikasi aplikasi harta_karun. Untuk memeriksanya, saya aktifkan virtual environment dan gunakan perintah `python --version`.
 8. Pada bagian `Start Command`, saya masukkan perintah `python manage.py migrate && gunicorn harta_karun.wsgi`.
-9. Selanjutnya, saya memasukkan nama aplikasi, yang juga akan menjadi nama domain situs web aplikasi Anda.
+9. Selanjutnya, saya memasukkan nama aplikasi, yang juga akan menjadi nama domain situs web aplikasi kita.
 10. Terakhir, saya mencentang opsi `HTTP Listener on PORT`, lalu klik `Deploy App` untuk memulai proses deployment aplikasi.
 
-Dengan mengikuti langkah-langkah di atas, aplikasi saya akan siap untuk diakses oleh teman-teman Anda melalui Internet.
+Dengan mengikuti langkah-langkah di atas, aplikasi saya akan siap untuk diakses oleh teman-teman melalui Internet.
   
 ### 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html. 
 ![Bagan](gambar_readme/bagan.png)
@@ -509,7 +511,7 @@ untuk memberikan informasi user yang sedang login.
 ### 1. Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya.
 Tentu, saya akan menjelaskan secara detail tentang setiap elemen selector CSS:
 
-#### a. **Universal Selector (*)**: Selector universal memilih semua elemen dalam dokumen HTML. Ini digunakan ketika Anda ingin menerapkan gaya ke seluruh elemen di halaman web Anda. Contohnya:
+#### a. **Universal Selector (*)**: Selector universal memilih semua elemen dalam dokumen HTML. Ini digunakan ketika kita ingin menerapkan gaya ke seluruh elemen di halaman web kita. Contohnya:
 
    ```css
    * {
@@ -519,7 +521,7 @@ Tentu, saya akan menjelaskan secara detail tentang setiap elemen selector CSS:
 
    Ini akan mengubah warna teks semua elemen menjadi merah.
 
-#### b. **Element Selector**: Selector elemen memilih elemen berdasarkan nama elemennya. Misalnya, untuk memilih semua elemen `<p>`, Anda dapat menggunakan:
+#### b. **Element Selector**: Selector elemen memilih elemen berdasarkan nama elemennya. Misalnya, untuk memilih semua elemen `<p>`, kita dapat menggunakan:
 
    ```css
    p {
@@ -529,7 +531,7 @@ Tentu, saya akan menjelaskan secara detail tentang setiap elemen selector CSS:
 
    Ini akan mengatur ukuran font untuk semua elemen paragraf menjadi 16 piksel.
 
-#### c. **Class Selector (.)**: Selector kelas memilih elemen berdasarkan nilai atribut `class`. Ini memungkinkan Anda untuk memilih satu atau beberapa elemen dengan kelas tertentu. Contohnya:
+#### c. **Class Selector (.)**: Selector kelas memilih elemen berdasarkan nilai atribut `class`. Ini memungkinkan kita untuk memilih satu atau beberapa elemen dengan kelas tertentu. Contohnya:
 
    ```html
    <p class="highlight">Ini adalah teks yang di-highlight.</p>
@@ -640,7 +642,7 @@ Perbedaan antara Margin dan Padding:
 
 **Margin**: Margin adalah sejenis "ruang tambahan" di sekitar elemen HTML, yang berada di antara elemen tersebut dan elemen-elemen lain yang ada di sekitarnya. Gaya margin digunakan untuk mengontrol jarak antara elemen dengan elemen-elemen lain di sekitarnya. Margin tidak memiliki latar belakang atau warna, fungsinya hanyalah untuk mengatur ruang di sekitar elemen. 
 
-Sedangkan, **Padding**: Padding adalah area "kosong" di sekitar konten dalam elemen HTML. Padding digunakan untuk mengontrol jarak antara batas elemen dan kontennya sendiri. Dengan padding, Anda dapat mengubah warna atau latar belakang elemen tersebut sehingga paddingnya bisa terlihat. Padding digunakan untuk mengatur tampilan elemen dari bagian dalamnya.
+Sedangkan, **Padding**: Padding adalah area "kosong" di sekitar konten dalam elemen HTML. Padding digunakan untuk mengontrol jarak antara batas elemen dan kontennya sendiri. Dengan padding, kita dapat mengubah warna atau latar belakang elemen tersebut sehingga paddingnya bisa terlihat. Padding digunakan untuk mengatur tampilan elemen dari bagian dalamnya.
 
 ### 4. Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?
 
@@ -652,7 +654,7 @@ Perbedaan antara Bootstrap dan Tailwind CSS:
 - Menggunakan kelas-kelas bawaan yang sudah ditentukan dengan baik.
 - Lebih mudah untuk pengembang pemula karena menyediakan banyak komponen dan gaya siap pakai.
 
-Sedangkan, **Tailwind CSS** adalah kerangka kerja CSS "utility-first" yang memungkinkan Anda untuk membangun komponen dengan mengkombinasikan kelas-kelas kecil.
+Sedangkan, **Tailwind CSS** adalah kerangka kerja CSS "utility-first" yang memungkinkan kita untuk membangun komponen dengan mengkombinasikan kelas-kelas kecil.
 - Lebih fleksibel dan ringan dibandingkan dengan Bootstrap karena tidak memiliki gaya bawaan.
 - Cocok untuk proyek yang memerlukan kustomisasi tingkat tinggi dan ingin menghindari gaya bawaan.
 - Mengharuskan pengembang mendefinisikan gaya mereka sendiri dengan menambahkan kelas-kelas sesuai kebutuhan.
@@ -901,3 +903,173 @@ dan tidak lupa menambahkan path pada `urls.py`:
 ```python
 path('edit_item//<int:id>', edit_item, name='edit_item'),
 ```
+
+### ----------------------------------------------------------------------------------------------------------------
+
+# TUGAS 6
+
+### 1. Jelaskan perbedaan antara asynchronous programming dengan synchronous programming.
+a. **Synchronous Programming (Pemrograman Sinkron):**
+   - Dalam pemrograman sinkron, kode dijalankan langkah demi langkah, satu tugas harus selesai sebelum tugas berikutnya dimulai.
+   - Proses eksekusi program berjalan secara linear, di mana setiap perintah dieksekusi satu per satu dalam urutan yang ditentukan.
+   - Ini adalah pendekatan yang mudah dipahami dan didebug, karena alur eksekusi program dapat diprediksi dengan jelas.
+
+   **Kelebihan:**
+   - Alur eksekusi linear membuat pemrograman sinkron mudah dipahami.
+   - Berguna untuk tugas-tugas sederhana dan tidak memerlukan perubahan konteks.
+
+   **Kekurangan:**
+   - Tidak efisien untuk tugas yang memerlukan waktu lama, seperti I/O berkepanjangan atau permintaan jaringan, karena program harus menunggu tugas tersebut selesai sebelum melanjutkan pekerjaan berikutnya.
+
+b. **Asynchronous Programming (Pemrograman Asinkron):**
+   - Dalam pemrograman asinkron, beberapa tugas dapat dimulai dan dijalankan secara bersamaan tanpa harus menunggu tugas sebelumnya selesai.
+   - Proses eksekusi program tidak selalu berjalan dalam urutan yang sama. Tugas dapat dimulai, dihentikan, dan dilanjutkan nanti, bahkan dalam urutan yang berbeda.
+
+   **Kelebihan:**
+   - Lebih efisien untuk tugas yang memerlukan waktu lama atau tugas yang membutuhkan waktu tunggu, seperti operasi I/O atau permintaan jaringan, karena program bisa melanjutkan pekerjaan lain sambil menunggu tugas asinkron selesai.
+   - Meningkatkan responsivitas aplikasi, terutama dalam kasus aplikasi berbasis jaringan atau server.
+
+   **Kekurangan:**
+   - Lebih kompleks untuk dipahami dan didebug, karena tugas-tugas asinkron berjalan dalam urutan yang tidak selalu terlihat atau dapat diprediksi.
+   - Memerlukan manajemen perubahan konteks (context switching), yang dapat menambah kompleksitas kode.
+
+Dalam praktiknya, pemrograman asynchronous sangat berguna untuk mengoptimalkan kinerja aplikasi yang memerlukan penanganan banyak operasi I/O atau jaringan bersamaan. Pemrograman synchronous lebih cocok untuk tugas-tugas sederhana di mana alur eksekusi linier cukup efisien. Penggunaan yang tepat tergantung pada jenis tugas yang perlu ditangani dalam aplikasi kita.
+
+### 2. Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
+**Paradigma Event-Driven Programming** adalah suatu model pemrograman di mana program merespons peristiwa (events) yang terjadi secara asinkron. Program dalam paradigma ini biasanya terdiri dari berbagai komponen atau fungsi yang akan dieksekusi ketika peristiwa tertentu terjadi. Peristiwa ini dapat berasal dari berbagai sumber, seperti interaksi pengguna, input dari perangkat, atau bahkan peristiwa internal dalam program.
+
+Beberapa karakteristik utama paradigma event-driven programming adalah:
+- **Asynchronous**: Program dapat menjalankan tugas tanpa harus menunggu tugas sebelumnya selesai. Program akan merespons peristiwa saat peristiwa tersebut terjadi.
+- **Terpusat pada Peristiwa**: Program berbasis event-driven fokus pada peristiwa atau tindakan yang terjadi. Ketika peristiwa ini terjadi, program akan menjalankan tindakan yang sesuai.
+- **Callback Functions**: Program umumnya menggunakan callback functions untuk menentukan tindakan yang harus diambil ketika peristiwa terjadi.
+
+Contoh Penerapan dalam tugas saya adalah penggunaan event handler untuk merespons klik pada tombol "Add Item by AJAX."
+
+```javascript
+document.getElementById("button_add").onclick = addItem;
+```
+
+Dalam contoh ini, `document.getElementById("button_add").onclick` adalah bagian dari event-driven programming. Ini mengatakan bahwa ketika tombol dengan ID "button_add" diklik, maka fungsi `addItem` akan dieksekusi. Dengan kata lain, program merespons peristiwa "klik" pada tombol dengan menjalankan fungsi yang ditentukan (yaitu, `addItem`).
+
+### 3. Jelaskan penerapan asynchronous programming pada AJAX.
+Penerapan **asynchronous programming pada AJAX** adalah prinsip dasar dalam penggunaan teknologi AJAX (Asynchronous JavaScript and XML). AJAX memungkinkan komunikasi antara browser dan server tanpa harus mereload seluruh halaman web. Ini dilakukan dengan cara mengirim permintaan HTTP secara asinkron (tanpa perlu menunggu) dan menerima respons dari server saat respons tersebut siap. Beberapa konsep utama penerapan asynchronous programming pada AJAX meliputi:
+
+a. **Permintaan Asynchronous**: Ketika kita menggunakan AJAX, kita membuat permintaan HTTP (seperti permintaan GET atau POST) ke server tanpa menghentikan eksekusi program JavaScript kita. Program JavaScript kita terus berjalan sambil menunggu respons dari server.
+
+b. **Callback Functions**: Kita mendefinisikan callback functions untuk menangani respons dari server. Ini adalah bagian kunci dari asynchronous programming di AJAX. Ketika respons diterima, callback function yang sesuai akan dipanggil untuk menangani data respons.
+
+c. **Event Handling**: AJAX juga sering menggunakan event handling untuk merespons perubahan status permintaan, seperti ketika permintaan telah berhasil diselesaikan atau ketika terjadi kesalahan. kita dapat menentukan event listener untuk menangani peristiwa ini.
+
+Contoh konkret penerapan asynchronous programming dalam AJAX adalah ketika kita menggunakan metode `fetch` untuk mengambil data dari server dan menangani responsnya dengan menggunakan `.then()` untuk menentukan apa yang harus dilakukan ketika data respons tiba.
+
+### 4. Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada library jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
+**Fetch API** dan **jQuery** adalah dua teknologi yang dapat digunakan untuk mengimplementasikan AJAX dalam pengembangan web. Berikut perbandingan antara keduanya dan pendapat saya tentang mana yang lebih baik:
+
+**Fetch API:**
+- **Ringan**: Fetch API adalah API bawaan dalam JavaScript modern, sehingga tidak memerlukan perpustakaan eksternal. Ini membuatnya lebih ringan dan lebih efisien daripada jQuery.
+- **Promise-Based**: Fetch API menggunakan promise, yang membuatnya sangat baik dalam mengelola asynchronous programming. Ini membuat kode kita lebih mudah dibaca dan dipahami.
+- **Mendukung JSON secara Bawaan**: Fetch API secara bawaan mendukung parsing JSON dan tidak memerlukan konfigurasi tambahan.
+
+**jQuery:**
+- **Lintas Browser**: jQuery adalah perpustakaan JavaScript yang dikembangkan untuk mengatasi perbedaan antara browser-browsers yang berbeda. Ini memberikan fleksibilitas dalam mengembangkan aplikasi web yang kompatibel dengan berbagai browser.
+- **Abstraksi yang Kuat**: jQuery menyediakan abstraksi yang kuat untuk berbagai tugas, termasuk AJAX, yang dapat menghemat waktu dan usaha dalam pengembangan.
+- **Plugin dan Ekosistem**: jQuery memiliki ekosistem plugin yang luas, yang dapat mempercepat pengembangan aplikasi tertentu.
+
+Oleh karena itu, menurut saya pilihan antara **Fetch API** dan **jQuery** tergantung pada kebutuhan proyek dan preferensi kita. **Fetch API** adalah pilihan yang lebih modern dan lebih ringan untuk proyek-proyek baru, terutama jika kita ingin memanfaatkan fitur promise dan kita tidak perlu mendukung browser-browsers kuno. Sementara itu, **jQuery** tetap relevan dalam konteks proyek yang ada atau proyek yang perlu mendukung sejumlah besar browser lama. Jika kita sudah terbiasa dengan jQuery atau proyek kita sangat bergantung pada plugin-plugin jQuery yang ada, maka jQuery tetap merupakan pilihan yang cocok.
+
+### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+Saya mengubah tabel saya agar mengimplementasikan cards. Lalu, untuk mengambil item saya menggunakan AJAX GET. Berikut kode yang saya modifikasi: <table id="item_table"></table> -> <div id="item_cards"></div>
+
+Saya juga menambahkan script pada main.html untuk menerapkan AJAX GET, untuk mengambil dan mengirim data ke server tanpa perlu memuat ulang satu halaman penuh seperti ini:
+```html
+<script>
+    async function getItems() {
+        return fetch("{% url 'main:get_item_json' %}").then((res) => res.json());
+    }
+
+    async function refreshItems() {
+        document.getElementById("item_cards").innerHTML = ""; 
+        const products = await getItems();
+
+        products.forEach((item) => {
+            const editUrl = "{% url 'main:edit_item' 999999 %}".replace('999999', item.pk);
+            const deleteUrl = "{% url 'main:delete_item' 999999 %}".replace('999999', item.pk);
+            const increaseUrl = `{% url 'main:increase_amount' 999999 %}`.replace('999999', item.pk);
+            const decreaseUrl = `{% url 'main:decrease_amount' 999999 %}`.replace('999999', item.pk);
+
+            const newCard = `
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">${item.fields.name}</h5>
+                    <a href="${increaseUrl}" class="btn btn-sm btn-increase">[+]</a>
+                    <p class="card-text amount-display">${item.fields.amount} ${item.fields.description}</p>
+                    <a href="${decreaseUrl}" class="btn btn-sm btn-increase">[-]</a>
+                    <br>
+                    <br>
+                    <a href="${editUrl}" class="btn btn-sm btn-edit">✎</a>
+                    <a href="${deleteUrl}" class="btn btn-sm btn-delete">🗑️</a>
+                </div>
+            </div>`;
+
+            document.getElementById("item_cards").insertAdjacentHTML('beforeend', newCard);
+        });
+    }
+
+    refreshItems();
+
+    function addItem() {
+        fetch("{% url 'main:add_item_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        })
+        .then(refreshItems)
+        .catch(error => {
+            console.error(error);
+        });
+
+        document.getElementById("form").reset();
+        return false;
+    }
+
+    document.getElementById("button_add").onclick = addItem;
+</script>
+```
+
+Tidak lupa saya menambahkan path ke urls.py di main seperti ini:
+```python
+path('get-item/', get_item_json, name='get_item_json'),
+path('create-item-ajax/', add_item_ajax, name='add_item_ajax')
+```
+
+Implementasi AJAX Post saya terapkan untuk menambahkan item. pada views.py saya menambahkan fungsi ini:
+```python
+def get_item_json(request):
+    product_item = Item.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', product_item))
+
+@csrf_exempt
+def add_item_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        amount = request.POST.get("amount")
+        description = request.POST.get("description")
+        user = request.user
+
+        new_item = Item(name=name, amount=amount, description=description, user=user)
+        new_item.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
+```
+
+Pengimplementasian AJAX Post ini mengirimkan POST request ke server dengan data dari addItemForm untuk menambahkan item baru. Respons server kemudian digunakan untuk menambahkan kartu baru untuk item tersebut ke halaman.
+
+Semua implementasi fungsi-fungsi get dan post di atas menggunakan AJAX untuk berkomunikasi dengan server agar memungkinkan pengalaman pengguna yang dinamis dan lancar tanpa perlu memuat ulang halaman penuh.
+
+Penerapan collectstatic saya lakukan dengan mengubah settings.py agar memuat kode berikut:
+```python
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+```
+Lalu, saya menjalankan python manage.py collectstatic pada terminal. STATIC_URL digunakan untuk menentukan bagaimana URL untuk file statis dibuat di template. STATIC_ROOT digunakan untuk menentukan di mana semua file statis dikumpulkan ketika menjalankan perintah collectstatic.
