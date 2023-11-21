@@ -78,6 +78,10 @@
         background-color: white;
     }
 
+    .card:last-child {
+        background-color: #e44a7b;
+    }
+
     .card + .card {
         margin-top: 15px;
     }
@@ -239,7 +243,7 @@
                     <br>
                     <br>
                     <a href="${editUrl}" class="btn btn-sm btn-edit">✎</a>
-                    <a href="${deleteUrl}" class="btn btn-sm btn-delete">🗑️</a>
+                    <a href="${deleteUrl}" class="btn btn-sm btn-delete" data-item-id="${item.pk}">🗑️</a>
                 </div>
             </div>`;
 
@@ -264,6 +268,45 @@
     }
 
     document.getElementById("button_add").onclick = addItem;
+
+    // Function to handle the AJAX delete action
+    async function deleteItem(itemId) {
+        try {
+            const response = await fetch(`/delete-item/${itemId}/`, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                refreshItems();
+            } else {
+                console.error('Failed to delete the item.');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Attach click event listeners to delete buttons
+    document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('btn-delete')) {
+            const itemId = event.target.getAttribute('data-item-id');
+            deleteItem(itemId);
+        }
+    });
+
+    function getCookie(name) {
+        const cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + '=') {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 </script>
 
 {% endblock content %}

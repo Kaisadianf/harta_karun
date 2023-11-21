@@ -1,5 +1,6 @@
 import datetime
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+import json
+from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse, Http404, JsonResponse
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
@@ -141,3 +142,22 @@ def add_item_ajax(request):
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+@csrf_exempt
+def create_item_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
+
+        new_product = Item.objects.create(
+            user = request.user,
+            name = data["name"],
+            price = int(data["amount"]),
+            description = data["description"]
+        )
+
+        new_product.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
